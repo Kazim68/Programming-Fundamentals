@@ -3,7 +3,9 @@
 using namespace std;
 
 void playermove(int x, int y);
+void playermovereverse(int x, int y);
 void printMaze();
+
 void gotoxy(int x, int y)
 {
  COORD coordinates;
@@ -19,24 +21,8 @@ int main(){
 
  system("cls");
  printMaze(); 
-  
- while (true){
 
-  if (y < 23) 
- {
- playermove(x, y);
- y += 1;
- }
-
- if (y == 23)
- {
- gotoxy(x, y-1);
- cout << " ";
- y = 2;
- x += 1;
- playermove(x, y);
- } 
-}
+ playermove(x, y+1);  
 
  gotoxy(0, 30);
  return 0;}
@@ -71,17 +57,47 @@ cout << "#######################################################################
 
 
 void playermove(int x, int y)
-{
+{ 
+ if (y != 1)
+ {
  gotoxy(x, y-1);
  cout << " "; 
+ }
+
+ if (y < 23)
+ {
  gotoxy(x, y);
  cout << "P"; 
  Sleep(100);
+ }
+
+ if (y == 22)
+ {
+ playermovereverse(x, y);
+ }
+ 
+ playermove(x, y += 1);
+} 
+
+void playermovereverse(int x, int y)
+{ 
+ if (y != 22)
+ {
+ gotoxy(x, y+1);
+ cout << " "; 
+ }
+
+ if (y > 1)
+ {
+ gotoxy(x, y);
+ cout << "P"; 
+ Sleep(100);
+ }
+
+ if (y == 1)
+ {
+ playermove(x, y);
+ }
+ 
+ playermovereverse(x, y -= 1);
 }
-
-
-
-
-
-
-
