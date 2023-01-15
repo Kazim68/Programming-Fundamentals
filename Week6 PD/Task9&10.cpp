@@ -2,7 +2,7 @@
 #include <windows.h>
 using namespace std;
 
-void printMaze();
+void maze(int l, int w);
 char getCharAtxy(short int x, short int y);
 void printpacman(int x, int y);
 void clear(int x, int y, char prev);
@@ -15,21 +15,36 @@ void printscore(int score);
 int main()
 {
 
-    int x = 4;
-    int y = 4;
+    int x = 3;
+    int y = 2;
     bool gamerunning = true;
     int score = 0;
-    int gx1 = 4;
-    int gy1 = 22;
-    int gx2 = 54;
-    int gy2 = 10;
     string hdirection = "right";
     string vdirection = "up";
     char hprevchar = ' ';
     char vprevchar = ' ';
+    int l ,w;
+    
+    cout << "Enter Length of maze: ";
+    cin >> l;
+    cout << "Enter Width of maze: ";
+    cin >> w;
+
+    while ((l < 25 && w < 50) || (l > 70 && w > 100))
+    {
+     cout << "Invalid! Please re-enter Length: ";
+     cin >> l;
+     cout << "Invalid! Please re-enter Width: ";
+     cin >> w;        
+    }
+
+    int gx1 = 4;
+    int gy1 = l - 1;
+    int gx2 = 13;
+    int gy2 = 10;
 
     system("cls");
-    printMaze();
+    maze(l, w);
     printpacman(x, y);
     printghost1(gx1, gy1);
     printghost2(gx2, gy2);
@@ -53,6 +68,10 @@ int main()
                 printghost1(gx1, gy1);
                 hprevchar = nextlocation;
             }
+            else if (nextlocation == 'P')
+            {
+                gamerunning = false;
+            }
         }
         if (hdirection == "left")
         {
@@ -67,6 +86,10 @@ int main()
                 gx1 -= 1;
                 printghost1(gx1, gy1);
                 hprevchar = nextlocation;
+            }
+            else if (nextlocation == 'P')
+            {
+                gamerunning = false;
             }
         }
 
@@ -84,6 +107,10 @@ int main()
                 vprevchar = nextlocation;
                 printghost2(gx2, gy2);
             }
+            else if (nextlocation == 'P')
+            {
+                gamerunning = false;
+            }
         }
         if (vdirection == "down")
         {
@@ -98,6 +125,10 @@ int main()
                 gy2 += 1;
                 vprevchar = nextlocation;
                 printghost2(gx2, gy2);
+            }
+            else if (nextlocation == 'P')
+            {
+                gamerunning = false;
             }
         }
 
@@ -201,32 +232,289 @@ int main()
     return 0;
 }
 
-void printMaze()
+void maze(int L, int a)
 {
-    cout << "##########################################################################           " << endl;
-    cout << "||............................................................  .....   ||           " << endl;
-    cout << "||..  %%%%%%%%%%%%%%%%%       ...      %%%%%%%%%%%%%%   |%|..   %%%%%   ||           " << endl;
-    cout << "||..         |%|    |%|    |%|...     |%|          |%|  |%|..     |%|   ||           " << endl;
-    cout << "||..         |%|    |%|    |%|...     |%|          |%|  |%|..     |%|   ||           " << endl;
-    cout << "||..         %%%%%%%%%  .. |%|...     %%%%%%%%%%%%%%%      ..   %%%%%.  ||           " << endl;
-    cout << "||..         |%|        .. |%|...    ................  |%| ..        .  ||           " << endl;
-    cout << "||..         %%%%%%%%%%%.. |%|...    %%%%%%%%%%%%%     |%| ..   %%%%%.  ||           " << endl;
-    cout << "||..                 |%|.            |%|.......        |%| ..     |%|.  ||           " << endl;
-    cout << "||..     ........... |%|.            |%|.......|%|         ..     |%|.  ||           " << endl;
-    cout << "||..|%|  |%|%%%%%|%|.|%|. |%|           .......|%|         ..|%|  |%|.  ||           " << endl;
-    cout << "||..|%|  |%|     |%|..    %%%%%%%%%%%%  .......|%|          .|%|.       ||           " << endl;
-    cout << "||..|%|  |%|     |%|..          ...|%|      %%%%%%         . |%|.       ||           " << endl;
-    cout << "||..|%|              .          ...|%|                 |%| ..|%|.       ||           " << endl;
-    cout << "||..|%|  %%%%%%%%%%%%%%%%       ...|%|%%%%%%%%%%%%     |%| ..|%|%%%%%%  ||           " << endl;
-    cout << "||..................................................   |%| ...........  ||           " << endl;
-    cout << "||   ...............................................         ........   ||           " << endl;
-    cout << "||..|%|  |%|     |%|..    %%%%%%%%%%%%  .......|%|     |%| ..|%|.       ||           " << endl;
-    cout << "||..|%|  |%|     |%|..          ...|%|      %%%%%%     |%| ..|%|.       ||           " << endl;
-    cout << "||..|%|              .          ...|%|                 |%| ..|%|.       ||           " << endl;
-    cout << "||..|%|  %%%%%%%%%%%%%%%        ...|%|%%%%%%%%%%%      |%| ..|%|%%%%%   ||           " << endl;
-    cout << "||.................................................    |%| ..........   ||           " << endl;
-    cout << "||   ..............................................          ........   ||           " << endl;
-    cout << "##########################################################################           " << endl;
+    int w;
+    int r;
+    int l = L;
+    int c = l/2;
+    cout << endl;
+    while (l != 0)
+    {
+        w = a;
+        
+        if (l == L || l == 1 )
+        {
+            while( w != 0)
+            {
+                cout << "#";
+                w -= 1;
+            }
+            cout << endl;
+        }
+
+        else if (l == (L - 1) || l == 2)
+        {
+            cout << "||";
+            w -= 2;
+            while (w != 2)
+            {
+                cout << ".";
+                w -= 1;
+            }
+            cout << "||" << endl;
+            w = 0;
+        }
+
+        else if (l == 10 || l == 20 || l == L * 0.25 || l == L * 0.75 || l % 4 == 0)
+        {
+            cout << "||";
+            w -= 2;
+            if (w != 2)
+            {
+                r = w - (w/7);
+                while (w > r)
+                {
+                    cout << " ";
+                    w -= 1;
+                }
+
+                r = w - (w/10);
+                while (w > r)
+                {
+                    cout << ".";
+                    w -= 1;
+                }
+
+                cout << "     ";
+                w -= 5;
+
+                r = w - (w/8);
+                while (w > r)
+                {
+                    cout << "|%|";
+                    w -= 3;
+                }
+
+                cout << "   %%%";
+                w -= 6;
+
+                r = w - (w/3);
+                while (w > r)
+                {
+                    cout << ".";
+                    w -= 1;
+                }
+
+                cout << "%%%       %%%";
+                w -= 13;
+
+                while (w > 2)
+                {
+                    cout << ".";
+                    w -= 1;
+                }
+            }
+            cout << "||" << endl;
+            w = 0;
+        }
+
+        else if (l % 5 == 2 || l % 3 == 0)
+        {
+            cout << "||";
+            w -= 2;
+            if (w != 2)
+            {
+                r = w - (w/7);
+                while (w > r)
+                {
+                    cout << "%";
+                    w -= 1;
+                }
+
+                r = w - (w/10);
+                while (w > r)
+                {
+                    cout << " ";
+                    w -= 1;
+                }
+
+                cout << "|%%%|";
+                w -= 5;
+
+                r = w - (w/8);
+                while (w > r)
+                {
+                    cout << ".";
+                    w -= 1;
+                }
+
+                cout << "|  %%%|";
+                w -= 7;
+
+                r = w - (w/3);
+                while (w > r)
+                {
+                    cout << ".";
+                    w -= 1;
+                }
+
+                while (w > 2)
+                {
+                    cout << " ";
+                    w -= 1;
+                }
+            }
+            cout << "||" << endl;
+            w = 0;
+        }
+
+        else if (l == (c - 2) || l == (c + 2))
+        {
+            cout << "||";
+            w -= 2;
+
+            while (w != 2)
+            {
+                cout << ".";
+                w -= 1;
+            }
+
+            cout << "||" << endl;
+            w = 0;
+        }
+
+        else if (l == (c -1) || l == (c + 1))
+        {
+            int d = w / 2;
+            cout << "||";
+            w -= 2;
+
+            if (w != 2)
+            {
+                while ( w != (d + 10))
+                {
+                    cout << " ";
+                    w -= 1;
+                }
+
+                while (w != (d - 10))
+                {
+                    cout << "%";
+                    w -= 1;
+                }
+
+                while (w != 2)
+                {
+                    cout << " ";
+                    w -= 1;
+                } 
+            }
+            cout << "||" << endl;
+            w = 0;
+        }
+
+        else if (l == c)
+        {
+            int d = w / 2;
+            cout << "||";
+            w -= 2;
+
+            if (w != 2)
+            {
+                while (w != d + 10)
+                {
+                    cout << " ";
+                    w -= 1;
+                }
+
+                cout << "|%|";
+                w -= 3;
+
+                while (w != d - 7)
+                {
+                    cout << " ";
+                    w -= 1;
+                } 
+                
+                cout << "|%|";
+                w -= 3;
+
+                while (w != 2)
+                {
+                    cout << " ";
+                    w -= 1;
+                } 
+            }
+
+            cout << "||" << endl;
+            w = 0;
+        }
+
+        
+
+        else
+        {
+            cout << "||";
+            w -= 2;
+            if (w != 2)
+            {
+                r = w - (w/10);
+                while (w > r)
+                {
+                    cout << ".";
+                    w -= 1;
+                }
+
+                cout << "|%|";
+                w -= 3;
+
+                r = w - (w/10);
+                while (w > r)
+                {
+                    cout << " ";
+                    w -= 1;
+                }
+
+                r = w - (w/4);
+                while (w > r)
+                {
+                    cout << "%";
+                    w -= 1;
+                }
+
+                r = w - (w/3);
+                while (w > r)
+                {
+                    cout << ".";
+                    w -= 1;
+                }
+
+                r = w - (w/2);
+                while (w > r)
+                {
+                    cout << " ";
+                    w -= 1;
+                }
+
+                while (w > 8)
+                {
+                    cout << "|%|";
+                    w -= 3;
+                }
+
+                while (w > 2)
+                {
+                    cout << ".";
+                    w -= 1;
+                }
+            }
+            cout << "||" << endl;
+            w = 0;
+        }
+      
+        l -= 1;
+    }
 }
 
 void gotoxy(int x, int y)
@@ -280,6 +568,6 @@ void printghost2(int x, int y)
 
 void printscore(int score)
 {
-    gotoxy(100, 15);
+    gotoxy(30, 0);
     cout << "score: " << score;
 }
